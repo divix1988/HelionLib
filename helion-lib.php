@@ -1,23 +1,23 @@
 <?php
 /*
  * Biblioteka PHP dla Programu Partnerskiego Grupy Wydawniczej Helion
- * 
+ *
  * Wersja: 1.0.0
- * Å¹rÃ³dÅ‚a biblioteki: https://github.com/gwhelion/HelionLib
+ * ród³a biblioteki: https://github.com/gwhelion/HelionLib
  * Dokumentacja: https://github.com/gwhelion/HelionLib/wiki
- * 
- * Autor: PaweÅ‚ Pela (paulpela.com, pawel@paulpela.com)
+ *
+ * Autor: Pawe³ Pela (paulpela.com, pawel@paulpela.com)
  * Licencja: GPL2
- * 
- * WiÄ™cej informacji: http://program-partnerski.helion.pl
+ *
+ * Wiêcej informacji: http://program-partnerski.helion.pl
  * Forum i support: http://program-partnerski.helion.pl/forum/
- * KanaÅ‚ RSS z informacjami o aktualizacjach:
- * 
- * 
+ * Kana³ RSS z informacjami o aktualizacjach:
+ *
+ *
  * Copyright 2012  GW Helion  (email : radoslaw.tosta@helion.pl)
  *
  * This program is free software; you can redistribute it and/or modify
- * it under the terms of the GNU General Public License, version 2, as 
+ * it under the terms of the GNU General Public License, version 2, as
  * published by the Free Software Foundation.
  *
  * This program is distributed in the hope that it will be useful,
@@ -28,36 +28,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
- * 
+ *
  */
 
 class HelionLib {
-    
+
     private $error;
-    
+
     // Cache'owanie danych
-    
+
     /**
-     * Tablica zÅ‚oÅ¼ona z:
-     * [0] - URL ÅºrÃ³dÅ‚a danych
+     * Tablica z³o¿ona z:
+     * [0] - URL Ÿród³a danych
      * [1] - obiekt SimpleXML z danymi
-     * 
-     * @var array 
+     *
+     * @var array
      */
     private $cache_xml;
-    
+
     /**
-     * Cache tablic z danymi o ksiÄ…Å¼kach.
-     * 
-     * Tylko pierwsze zapytanie o dane ksiÄ…Å¼ki jest kierowane do serwerÃ³w Heliona.
-     * KaÅ¼de kolejne zapytania pobierane sÄ… juÅ¼ z cache.
-     * 
+     * Cache tablic z danymi o ksi¹¿kach.
+     *
+     * Tylko pierwsze zapytanie o dane ksi¹¿ki jest kierowane do serwerów Heliona.
+     * Ka¿de kolejne zapytania pobierane s¹ ju¿ z cache.
+     *
      * $cache_ksiazki_helion
      *  [ident]
      *      array $ksiazka
      *  [ident]
      *      array $ksiazka
-     * 
+     *
      * @var array
      */
     private $cache_ksiazki_helion;
@@ -66,19 +66,19 @@ class HelionLib {
     private $cache_ksiazki_septem;
     private $cache_ksiazki_ebookpoint;
     private $cache_ksiazki_bezdroza;
-    
+
     /**
      *
      * @var array
      */
     private $cache_kategorie;
-    
+
     private $cache_top;
-    
+
     private $cache_nowinki;
-    
+
     private $cache_w_przygotowaniu;
-    
+
     private $cache_ksiazka_dnia;
 
 
@@ -90,7 +90,7 @@ class HelionLib {
         "ebookpoint",
         "bezdroza",
     );
-    
+
     private $rozmiary_okladek = array(
         "65x85",
         "72x95",
@@ -101,12 +101,12 @@ class HelionLib {
         "181x236",
         "326x466",
     );
-    
+
     private $partner;
-    
-    
+
+
     //--------------------------------------------------------------------------
-    
+
     /**
      *
      * @param string $partner Identyfikator partnera, np. 1234a
@@ -115,14 +115,14 @@ class HelionLib {
         if($this->val_partner($partner)) {
             $this->partner = $partner;
         } else {
-            $this->error = "Podanie numeru partnera jest obowiÄ…zkowe.";
+            $this->error = "Podanie numeru partnera jest obowi¹zkowe.";
             return false;
         }
     }
-    
+
     /**
-     * Zwraca link do strony gÅ‚Ã³wnej z numerem partnera.
-     * 
+     * Zwraca link do strony g³ównej z numerem partnera.
+     *
      * @param string $ksiegarnia helion|onepress itd.
      * @return string URL
      */
@@ -130,7 +130,7 @@ class HelionLib {
 
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         if(!$this->val_partner($this->partner))
             return false;
 
@@ -139,13 +139,13 @@ class HelionLib {
     }
 
     /**
-     * Walidator ksiÄ™garni.
-     * 
+     * Walidator ksiêgarni.
+     *
      */
     public function val_ksiegarnia($ksiegarnia) {
 
         if(!in_array($ksiegarnia, $this->ksiegarnie)) {
-            $this->error = "NieprawidÅ‚owa nazwa ksiÄ™garni.";
+            $this->error = "Nieprawid³owa nazwa ksiêgarni.";
             return false;
         } else {
             return true;
@@ -160,10 +160,10 @@ class HelionLib {
         if($this->match_partner($partner)) {
             return true;
         } else {
-            $this->error = "Walidacja id partnera nie powiodÅ‚a siÄ™.";
+            $this->error = "Walidacja id partnera nie powiod³a siê.";
             return false;
         }
-        
+
     }
 
     private function match_partner($partnerid) {
@@ -176,7 +176,7 @@ class HelionLib {
     public function get_partner() {
         return $this->partner;
     }
-    
+
     public function set_partner($partner) {
         if($this->val_partner($partner)) {
             $this->partner = $partner;
@@ -189,7 +189,7 @@ class HelionLib {
     public function strip_ident($ident) {
 
         if(!$this->val_ident($ident)) {
-            $this->error = "Niepoprawny identyfikator ksiÄ…Å¼ki (ident).";
+            $this->error = "Niepoprawny identyfikator ksi¹¿ki (ident).";
             return false;
         }
 
@@ -206,45 +206,45 @@ class HelionLib {
             $temp_ident = explode("_m", $ident);
             $ident = $temp_ident[0];
         }
-        
+
         return $ident;
     }
 
     public function val_ident($ident) {
         if(!preg_match("/^[a-z0-9_]+$/", $ident)) {
-            $this->error = "Niepoprawny identyfikator ksiÄ…Å¼ki (ident).";
+            $this->error = "Niepoprawny identyfikator ksi¹¿ki (ident).";
             return false;
         } else {
             return true;
         }
     }
-    
+
     /**
-     * Zwraca aktualny komunikat bÅ‚Ä™du.
-     * 
-     * @return string Komunikat bÅ‚Ä™du
+     * Zwraca aktualny komunikat b³êdu.
+     *
+     * @return string Komunikat b³êdu
      */
     public function get_error() {
         return $this->error;
     }
-    
+
     /**
-     * 
+     *
      * @return string
      */
-    public function okladka() {  
-        
+    public function okladka() {
+
         $num_args = func_num_args();
-        
+
         if($num_args == 2) {
             $ksiazka = func_get_arg(0);
-            
+
             $ksiegarnia = $ksiazka['ksiegarnia'];
             $ident = $ksiazka['ident'];
             $rozmiar = func_get_arg(1);
         } else if($num_args == 1) {
             $ksiazka = func_get_arg(0);
-            
+
             $ksiegarnia = $ksiazka['ksiegarnia'];
             $ident = $ksiazka['ident'];
             $rozmiar = "120x156";
@@ -253,131 +253,131 @@ class HelionLib {
             $ident = func_get_arg(1);
             $rozmiar = func_get_arg(2);
         } else {
-            $this->error = 'NieprawidÅ‚owa liczba argumentÃ³w.';
+            $this->error = 'Nieprawid³owa liczba argumentów.';
             return false;
         }
-        
+
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
-        if(!$this->val_rozmiar($rozmiar))
-            return false;
-        
+
         if(!$this->val_ident($ident))
             return false;
-        
+
+        if(!$this->val_rozmiar($rozmiar))
+            return false;
+
         $ident = $this->strip_ident($ident);
-        
+
         return "http://" . $ksiegarnia . ".pl/okladki/" . $rozmiar . "/" . $ident . ".jpg";
     }
-    
+
     /**
-     * Testuje, czy podany rozmiar okÅ‚adki jest prawidÅ‚owy.
-     * 
+     * Testuje, czy podany rozmiar ok³adki jest prawid³owy.
+     *
      * @param string $rozmiar np. 120x156
      * @return bool
      */
     public function val_rozmiar($rozmiar) {
         if(in_array($rozmiar, $this->rozmiary_okladek)) {
-            return true; 
+            return true;
         } else {
-            $this->error = "NieprawidÅ‚owy rozmiar okÅ‚adki.";
-            return false;  
+            $this->error = "Nieprawid³owy rozmiar ok³adki.";
+            return false;
         }
     }
-    
+
     /**
-     * Zwraca link do strony z promocjami w podanej ksiÄ™garni.
+     * Zwraca link do strony z promocjami w podanej ksiêgarni.
      */
     public function link_promocje($ksiegarnia, $partnerid = null) {
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         if($partnerid && !$this->val_partner($partnerid)) {
             return false;
         } else if (!$partnerid) {
             $partnerid = $this->get_partnerid();
         }
-        
+
         if(!$partnerid)
             return false;
-        
+
         return "http://" . $ksiegarnia . ".pl/page/" . $partnerid . "/promocje";
     }
-    
+
     /**
-     * Zwraca link do pliku XML z listÄ… kategorii.
-     * 
+     * Zwraca link do pliku XML z list¹ kategorii.
+     *
      */
     public function lista_kategorii_xml($ksiegarnia = 'helion') {
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         return 'http://' . $ksiegarnia . '.pl/plugins/new/xml/lista-serie.cgi';
     }
-    
+
     /**
-     * Zwraca link do pliku XML z listÄ… serii wydawniczych.
+     * Zwraca link do pliku XML z list¹ serii wydawniczych.
      */
     public function lista_serii_xml($ksiegarnia = 'helion') {
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         return 'http://' . $ksiegarnia . '.pl/plugins/new/xml/lista-katalog.cgi';
     }
-    
+
     /**
-     * Zwraca adres URL z numerem partnera, kierujÄ…cy do kategorii w wybranej ksiÄ™garni.
-     * 
+     * Zwraca adres URL z numerem partnera, kieruj¹cy do kategorii w wybranej ksiêgarni.
+     *
      * TODO!!! - identyfikator kategorii
-     * 
+     *
      * @param string $ksiegarnia np. "helion", "onepress" itd.
-     * @param string $kategoria np. 
-     * @param string $partner Identyfikator partnera (opcjonalny), domyÅ›lnie pobierany z $this->partner
-     * @return string Adres URL kategorii wraz z numerem partnera. 
+     * @param string $kategoria np.
+     * @param string $partner Identyfikator partnera (opcjonalny), domyœlnie pobierany z $this->partner
+     * @return string Adres URL kategorii wraz z numerem partnera.
      */
     public function link_do_kategorii($ksiegarnia, $kategoria, $partner = null) {
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         if(!$this->val_kategoria($kategoria))
             return false;
-        
+
         if($partner && !$this->val_partner($partner))
             return false;
-        
+
         if(!$partner)
             $partner = $this->get_partnerid();
-        
+
         return 'http://' . $ksiegarnia . '.pl/page/' . $partner . '/katalog/' . $kategoria . '.html.htm';
     }
-    
+
     /**
-     * Zwraca adres URL z numerem partnera, kierujÄ…cy do serii wydawniczej w wybranej ksiÄ™garni.
-     * 
+     * Zwraca adres URL z numerem partnera, kieruj¹cy do serii wydawniczej w wybranej ksiêgarni.
+     *
      * TODO!!! - identyfikator serii
-     * 
+     *
      * @param string $ksiegarnia np. "helion", "onepress" itd.
-     * @param string $seria np. 
-     * @param string $partner Identyfikator partnera (opcjonalny), domyÅ›lnie pobierany z $this->partner
-     * @return string Adres URL serii wraz z numerem partnera. 
+     * @param string $seria np.
+     * @param string $partner Identyfikator partnera (opcjonalny), domyœlnie pobierany z $this->partner
+     * @return string Adres URL serii wraz z numerem partnera.
      */
     public function link_do_serii($ksiegarnia, $seria, $partner = null) {
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         if(!$this->val_seria($seria))
             return false;
-        
+
         if($partner && !$this->val_partner($partner))
             return false;
-        
+
         if(!$partner)
             $partner = $this->get_partnerid();
-        
+
         return 'http://' . $ksiegarnia . '.pl/page/' . $partner . '/katalog/' . $seria . '.html.htm';
     }
-    
+
     /**
      *
      * @param string $kategoria 28,0,0
@@ -387,15 +387,15 @@ class HelionLib {
         if($this->match_kategoria($kategoria)) {
             return true;
         } else {
-            $this->error = "Walidacja identyfikatora nie powiodÅ‚a siÄ™.";
+            $this->error = "Walidacja identyfikatora nie powiod³a siê.";
             return false;
         }
     }
-    
+
     private function match_kategoria($kategoria) {
         return preg_match('/^[0-9,]$/', $kategoria);
     }
-    
+
     /**
      *
      * @param string $seria 28,0,0
@@ -404,131 +404,131 @@ class HelionLib {
     public function val_seria($seria) {
         return $this->val_kategoria($seria);
     }
-    
+
     /**
-     * Zwraca URL z numerem partnera, prowadzÄ…cy do wybranej ksiÄ…Å¼ki.
-     * 
+     * Zwraca URL z numerem partnera, prowadz¹cy do wybranej ksi¹¿ki.
+     *
      * @param string $ksiegarnia np. helion, onepress itp.
-     * @param string $ident Identyfikator ksiÄ…Å¼ki
-     * @param int $cyfra Dodatkowy parametr, pozwalajÄ…cy dokÅ‚adniej Å›ledziÄ‡ konwersje. Zakres 0-255.
-     * @param string $partner Identyfikator partnera. DomyÅ›lnie pobierany z $this->partner
-     * @return string URL z numerem partnera, prowadzÄ…cy do wybranej ksiÄ…Å¼ki. 
+     * @param string $ident Identyfikator ksi¹¿ki
+     * @param int $cyfra Dodatkowy parametr, pozwalaj¹cy dok³adniej œledziæ konwersje. Zakres 0-255.
+     * @param string $partner Identyfikator partnera. Domyœlnie pobierany z $this->partner
+     * @return string URL z numerem partnera, prowadz¹cy do wybranej ksi¹¿ki.
      */
     public function link_do_ksiazki($ksiegarnia, $ident, $cyfra = null, $partner = null) {
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         if(!$this->val_ident($ident))
             return false;
-        
+
         if($cyfra && !$this->val_cyfra($cyfra))
             return false;
-        
+
         $partner = $this->partner;
-        
+
         if(!$this->val_partner($partner))
             return false;
-        
+
         if($cyfra) {
             return 'http://' . $ksiegarnia . '.pl/view/' . $partner . '/' . $cyfra . '/' . $ident . '.htm';
         } else {
             return 'http://' . $ksiegarnia . '.pl/view/' . $partner . '/' . $ident . '.htm';
         }
-        
+
     }
-    
+
      /**
-     * Zwraca URL z numerem partnera, dodajÄ…cy wybranÄ… ksiÄ…Å¼kÄ™ do koszyka.
-     * 
+     * Zwraca URL z numerem partnera, dodaj¹cy wybran¹ ksi¹¿kê do koszyka.
+     *
      * @param string $ksiegarnia np. helion, onepress itp.
-     * @param string $ident Identyfikator ksiÄ…Å¼ki
-     * @param int $cyfra Dodatkowy parametr, pozwalajÄ…cy dokÅ‚adniej Å›ledziÄ‡ konwersje. Zakres 0-255.
-     * @param string $partner Identyfikator partnera. DomyÅ›lnie pobierany z $this->partner
-     * @return string URL z numerem partnera, dodajÄ…cy wybranÄ… ksiÄ…Å¼kÄ™ do koszyka. 
+     * @param string $ident Identyfikator ksi¹¿ki
+     * @param int $cyfra Dodatkowy parametr, pozwalaj¹cy dok³adniej œledziæ konwersje. Zakres 0-255.
+     * @param string $partner Identyfikator partnera. Domyœlnie pobierany z $this->partner
+     * @return string URL z numerem partnera, dodaj¹cy wybran¹ ksi¹¿kê do koszyka.
      */
     public function link_do_koszyka($ksiegarnia, $ident, $cyfra = null) {
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         if(!$this->val_ident($ident))
             return false;
-        
+
         if($cyfra && !$this->val_cyfra($cyfra))
             return false;
-        
+
         $partner = $this->partner;
-        
+
         if(!$this->val_partner($partner))
             return false;
-        
+
         if($cyfra) {
             return 'http://' . $ksiegarnia . '.pl/add/' . $partner . '/' . $cyfra . '/' . $ident . '.htm';
         } else {
             return 'http://' . $ksiegarnia . '.pl/add/' . $partner . '/' . $ident . '.htm';
         }
-        
+
     }
-    
+
     /**
      * Walidator dla parametru cyfra.
-     * 
-     * Walidator zwraca true jeÅ›li podana $cyfra jest poprawna, w przeciwnym razie 
+     *
+     * Walidator zwraca true jeœli podana $cyfra jest poprawna, w przeciwnym razie
      * zwraca false i ustawia $this->error.
-     * 
+     *
      * @param int $cyfra parametr z zakresu 0-255
-     * @return bool 
+     * @return bool
      */
     public function val_cyfra($cyfra) {
         if(is_int($cyfra) && ($cyfra >= 0 && $cyfra < 256)) {
             return true;
         } else {
-            $this->error = 'Parametr "cyfra" musi byÄ‡ liczbÄ… caÅ‚kowitÄ… z zakresu 0-255.';
+            $this->error = 'Parametr "cyfra" musi byæ liczb¹ ca³kowit¹ z zakresu 0-255.';
             return false;
         }
     }
-    
+
     /**
-     * Zwraca URL do kanaÅ‚u RSS z ksiÄ…Å¼kami z danej kategorii oraz kodem partnera w linkach.
-     * 
+     * Zwraca URL do kana³u RSS z ksi¹¿kami z danej kategorii oraz kodem partnera w linkach.
+     *
      * @param string $ksiegarnia helion | onepress | sensus itd.
      * @param string $kategoria np. 28,0,0
-     * @return string URL do RSS 
+     * @return string URL do RSS
      */
     public function rss_kategoria($ksiegarnia, $kategoria) {
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         if(!$this->val_kategoria($kategoria))
             return false;
-        
+
         if(!$this->val_partner($this->partner))
                 return false;
-        
+
         return 'http://' . $ksiegarnia . '.pl/rss/index.cgi?k=' . $kategoria . '&nr=' . $this->partner;
     }
-    
+
     /**
-     * Zwraca URL do kanaÅ‚u RSS z ksiÄ…Å¼kami z danej serii oraz kodem partnera w linkach.
-     * 
+     * Zwraca URL do kana³u RSS z ksi¹¿kami z danej serii oraz kodem partnera w linkach.
+     *
      * @param string $ksiegarnia helion | onepress | sensus itd.
      * @param string $seria np. 28,0,0
-     * @return string URL do RSS 
+     * @return string URL do RSS
      */
     public function rss_seria($ksiegarnia, $seria) {
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         if(!$this->val_seria($seria))
             return false;
-        
+
         if(!$this->val_partner($this->partner))
                 return false;
-        
+
         return 'http://' . $ksiegarnia . '.pl/rss/index.cgi?s=' . $seria . '&nr=' . $this->partner;
     }
-    
+
     private function get_xml($url) {
-        
+
         switch($this->detect_connection_method()) {
             case 'curl':
                 return $this->get_xml_with_curl($url);
@@ -538,18 +538,18 @@ class HelionLib {
                 return false;
         }
     }
-    
+
     private function detect_connection_method() {
         if($this->is_curl_enabled()) {
             return "curl";
         } else if($this->is_allow_url_fopen_enabled()) {
             return "fopen";
         } else {
-            $this->error = 'Å»adna z metod pobierania danych nie jest dostÄ™pna. Wymagany jest dostÄ™p przez cURL albo przez fopen.';
+            $this->error = '¯adna z metod pobierania danych nie jest dostêpna. Wymagany jest dostêp przez cURL albo przez fopen.';
             return false;
         }
     }
-    
+
     /**
      *
      * @return bool
@@ -557,7 +557,7 @@ class HelionLib {
     private function is_curl_enabled() {
         return (in_array('curl', get_loaded_extensions())) ? true : false;
     }
-    
+
     /**
      *
      * @return bool
@@ -565,223 +565,225 @@ class HelionLib {
     private function is_allow_url_fopen_enabled() {
         return (ini_get('allow_url_fopen') == 1) ? true : false;
     }
-    
+
     private function get_xml_with_curl($url) {
         if($this->cache_xml[0] == $url)
             return $this->cache_xml[1];
-        
+
         $cu = @curl_init();
-        @curl_setopt($cu, CURLOPT_URL, $url); 
-        @curl_setopt($cu, CURLOPT_RETURNTRANSFER, 1); 
+        @curl_setopt($cu, CURLOPT_URL, $url);
+        @curl_setopt($cu, CURLOPT_RETURNTRANSFER, 1);
         $xml = simplexml_load_string(@curl_exec($cu));
         @curl_close($cu);
-        
+
         if(is_object($xml)) {
             $this->cache_xml[0] = $url;
             $this->cache_xml[1] = $xml;
-            
+
             return $xml;
         } else {
-            $this->error = 'Pobranie danych XML zakoÅ„czyÅ‚o siÄ™ niepowodzeniem. Serwer nie zwrÃ³ciÅ‚ danych XML lub dane byÅ‚y niepoprawne.';
+            $this->error = 'Pobranie danych XML zakoñczy³o siê niepowodzeniem. Serwer nie zwróci³ danych XML lub dane by³y niepoprawne.';
             return false;
         }
     }
-    
+
     private function get_xml_with_fopen($url) {
         if($this->cache_xml[0] == $url)
             return $this->cache_xml[1];
-        
+
         $xml = @simplexml_load_file($url);
-        
+
         if(is_object($xml)) {
             $this->cache_xml[0] = $url;
             $this->cache_xml[1] = $xml;
-            
+
             return $xml;
         } else {
-            $this->error = 'Pobranie danych XML zakoÅ„czyÅ‚o siÄ™ niepowodzeniem. Serwer nie zwrÃ³ciÅ‚ danych XML lub dane byÅ‚y niepoprawne.';
+            $this->error = 'Pobranie danych XML zakoñczy³o siê niepowodzeniem. Serwer nie zwróci³ danych XML lub dane by³y niepoprawne.';
             return false;
         }
-        
+
     }
 
     /**
-     * Zwraca tablicÄ™ z danymi na temat ksiÄ…Å¼ki.
-     * 
-     * Ta funkcja korzysta z prostego cache'owania, tak wiÄ™c wielokrotne zapytania
-     * o tÄ™ samÄ… ksiÄ…Å¼kÄ™ wykonane pod rzÄ…d bÄ™dÄ… obsÅ‚ugiwane z cache'u.
-     * 
+     * Zwraca tablicê z danymi na temat ksi¹¿ki.
+     *
+     * Ta funkcja korzysta z prostego cache'owania, tak wiêc wielokrotne zapytania
+     * o tê sam¹ ksi¹¿kê wykonane pod rz¹d bêd¹ obs³ugiwane z cache'u.
+     *
      * @param string $ksiegarnia np. "helion", "ebookpoint"
      * @param string $ident np. "grywal", "markwy"
      * @return array
      */
     public function ksiazka($ksiegarnia, $ident) {
-        
+
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         if(!$this->val_ident($ident))
             return false;
-        
+
         if(!empty($this->cache_ksiazki_{$ksiegarnia}[$ident]))
             return $this->cache_ksiazki_{$ksiegarnia}[$ident];
-        
+
         $xml = $this->get_xml('http://' . $ksiegarnia . '.pl/plugins/new/xml/ksiazka.cgi?ident=' . $ident);
-        
+
         if($xml) {
             $ksiazka = $this->parser_xml_ksiazka($xml, $ksiegarnia);
-            
+
             if(is_array($ksiazka)) {
                 $this->cache_ksiazki_{$ksiegarnia}[$ident] = $ksiazka;
-                
+                //convert utf to iso
+                $ksiazka['tytul'][0] = iconv("UTF-8", "ISO-8859-2", $ksiazka['tytul'][0]);
+
                 return $ksiazka;
             } else {
                 return false;
             }
-            
+
         } else {
             return false;
         }
     }
-    
+
     /**
-     * Przetwarza obiekt XML na tablicÄ™ z informacjami o ksiÄ…Å¼ce.
-     * 
+     * Przetwarza obiekt XML na tablicê z informacjami o ksi¹¿ce.
+     *
      * @param object $xml
      * @param string $ksiegarnia
      * @return array
      */
     private function parser_xml_ksiazka($xml, $ksiegarnia) {
         $a = json_decode(json_encode((array) $xml),1);
-        
+
         if(is_array($a)) {
             $a['ident'] = strtolower($a['ident']);
             $a['ksiegarnia'] = $ksiegarnia;
             $a['opis'] = (string) $xml->opis;
             return $a;
         } else {
-            $this->error = 'Nie udaÅ‚o siÄ™ przetworzenie danych o ksiÄ…Å¼ce do tablicy.';
+            $this->error = 'Nie uda³o siê przetworzenie danych o ksi¹¿ce do tablicy.';
             return false;
         }
     }
-    
+
     private function parser_xml_top($xml) {
         $a = json_decode(json_encode((array) $xml),1);
-        
+
         if(is_array($a)) {
             $a = $a['PRODUKT'];
-            
+
             $i = 1;
             foreach($a as $top) {
                 $b[$i] = strtolower($top["@attributes"]["ID"]);
                 $i++;
             }
-            
+
             return $b;
         } else {
-            $this->error = 'Nie udaÅ‚o siÄ™ przetworzenie danych z listy TOP20.';
+            $this->error = 'Nie uda³o siê przetworzenie danych z listy TOP20.';
             return false;
         }
     }
 
     /**
-     * Zwraca tablicÄ™ z listÄ… najpopularniejszych ksiÄ…Å¼ek w danej ksiÄ™garni (TOP20).
-     * 
-     * Indeksy tablicy odpowiadajÄ… miejscu na liÅ›cie:
-     * $top[3] - ident ksiÄ…Å¼ki zajmujÄ…cej 3 miejsce
-     * Miejsca sÄ… liczone od 1 do 20, nie od 0 do 19;
-     * 
-     * Metoda korzysta z cache'owania - wielokrotne zapytania o tÄ™ samÄ… listÄ™ bÄ™dÄ…
-     * obsÅ‚ugiwane z cache'u. Tylko pierwsze pobranie listy powoduje wysÅ‚anie zapytania
-     * do serwerÃ³w Helion.
-     * 
+     * Zwraca tablicê z list¹ najpopularniejszych ksi¹¿ek w danej ksiêgarni (TOP20).
+     *
+     * Indeksy tablicy odpowiadaj¹ miejscu na liœcie:
+     * $top[3] - ident ksi¹¿ki zajmuj¹cej 3 miejsce
+     * Miejsca s¹ liczone od 1 do 20, nie od 0 do 19;
+     *
+     * Metoda korzysta z cache'owania - wielokrotne zapytania o tê sam¹ listê bêd¹
+     * obs³ugiwane z cache'u. Tylko pierwsze pobranie listy powoduje wys³anie zapytania
+     * do serwerów Helion.
+     *
      * @param string $ksiegarnia helion | onepress | sensus itd.
-     * @return array 
+     * @return array
      */
-    public function top($ksiegarnia = 'helion') {
+    public function top($ksiegarnia = 'helion', $catId) {
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         if(isset($this->cache_top[$ksiegarnia]))
             return $this->cache_top[$ksiegarnia];
-        
-        $xml = $this->get_xml('http://' . $ksiegarnia . '.pl/plugins/new/xml/top.cgi');
-        
+
+        $xml = $this->get_xml('http://' . $ksiegarnia . '.pl/plugins/new/xml/top.cgi?k='.$catId);
+
         $top = $this->parser_xml_top($xml);
-        
+
         if(!$top)
             return false;
-        
+
         $this->cache_top[$ksiegarnia] = $top;
-        
+
         return $top;
     }
-    
+
     private function parser_xml_nowinki($xml) {
         $a = json_decode(json_encode((array) $xml),1);
         //$a = (array) $xml;
-        
+
         if(is_array($a)) {
             $a = $a['item'];
-            
+
             // TODO - opis z xmlu...
             foreach($a as $item) {
                 print_r($xml->xpath('//item[@nr="' . $item['@attributes']['nr'] . '"]'));
-                $b[$item['@attributes']['nr']] = array('data' => $item['@attributes']['data'], 
+                $b[$item['@attributes']['nr']] = array('data' => $item['@attributes']['data'],
                     'opis' => (string) $xml->xpath('//item[@nr="' . $item['@attributes']['nr'] . '"]/opis'));
             }
-            
+
             return $b;
         } else {
-            $this->error = 'Nie udaÅ‚o siÄ™ przetworzenie danych o nowinkach wydawniczych do tablicy.';
+            $this->error = 'Nie uda³o siê przetworzenie danych o nowinkach wydawniczych do tablicy.';
             return false;
         }
     }
-    
+
     public function nowinki($ksiegarnia) {
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         if(isset($this->cache_nowinki[$ksiegarnia]))
                 return $this->cache_nowinki[$ksiegarnia];
-        
+
         $xml = $this->get_xml('http://' . $ksiegarnia . '.pl/plugins/new/xml/nowinki.cgi');
-        
+
         $nowinki = $this->parser_xml_nowinki($xml);
-        
+
         if(!$nowinki)
             return false;
-        
+
         $this->cache_nowinki[$ksiegarnia] = $nowinki;
-        
+
         return $nowinki;
     }
-    
+
     public function w_przygotowaniu($ksiegarnia) {
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         if(isset($this->cache_w_przygotowaniu[$ksiegarnia]))
                 return $this->cache_w_przygotowaniu[$ksiegarnia];
-        
+
         $xml = $this->get_xml('http://' . $ksiegarnia . '.pl/plugins/new/xml/lista.cgi?status=2&druk=0');
-        
+
         $w_przygotowaniu = $this->parser_xml_w_przygotowaniu($xml);
-        
+
         if(!$w_przygotowaniu)
             return false;
-        
+
         $this->cache_w_przygotowaniu[$ksiegarnia] = $w_przygotowaniu;
-        
+
         return $w_przygotowaniu;
     }
-    
+
     private function parser_xml_w_przygotowaniu($xml) {
         $a = json_decode(json_encode((array) $xml),1);
-        
+
         if(is_array($a)) {
             $a = $a['item'];
-            
+
             foreach($a as $item) {
                 $b[] = array(
                     "isbn" => $item['@attributes']['isbn'],
@@ -794,117 +796,117 @@ class HelionLib {
             }
             return $b;
         } else {
-            $this->error = 'Nie udaÅ‚o siÄ™ przetworzenie danych o ksiÄ…Å¼kach w przygotowaniu do tablicy.';
+            $this->error = 'Nie uda³o siê przetworzenie danych o ksi¹¿kach w przygotowaniu do tablicy.';
             return false;
         }
     }
-    
+
     /**
-     * Zwraca tablicÄ™ z listÄ… kategorii w danej ksiÄ™garni.
-     * 
-     * Tablica jest podzielona na dwie czÄ™Å›ci: nad i pod
-     * 
-     * W przypadku ksiÄ™garni Helion i Ebookpoint oprÃ³cz kategorii mamy kategorie 
-     * i podkategorie. PozostaÅ‚e ksiÄ™garnie majÄ… tylko kategorie, a czÄ™Å›Ä‡ 'pod'
+     * Zwraca tablicê z list¹ kategorii w danej ksiêgarni.
+     *
+     * Tablica jest podzielona na dwie czêœci: nad i pod
+     *
+     * W przypadku ksiêgarni Helion i Ebookpoint oprócz kategorii mamy kategorie
+     * i podkategorie. Pozosta³e ksiêgarnie maj¹ tylko kategorie, a czêœæ 'pod'
      * pozostaje pusta.
-     * 
+     *
      * Metoda korzysta z cache'owania.
-     * 
+     *
      * @param string $ksiegarnia np. helion|onepress|ebookpoint
-     * @return array 
+     * @return array
      */
     public function kategorie($ksiegarnia) {
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         if(isset($this->cache_kategorie[$ksiegarnia]))
                 return $this->cache_kategorie[$ksiegarnia];
-        
+
         $xml = $this->get_xml('http://' . $ksiegarnia . '.pl/plugins/new/xml/lista-katalog.cgi');
-        
+
         $kategorie = $this->parser_xml_kategorie($xml);
-        
+
         if(!$kategorie)
             return false;
-        
+
         $this->cache_kategorie[$ksiegarnia] = $kategorie;
-        
+
         return $kategorie;
     }
-    
+
     private function parser_xml_kategorie($xml) {
         if(!is_object($xml)) {
             $this->error = "Lista kategorii XML nie jest poprawnym obiektem SimpleXML.";
             return false;
         }
-        
+
         $lista = array("nad" => array(), "pod" => array());
-		
+
 		foreach($xml as $item) {
 			$grupa_nad = (string) $item->attributes()->grupa_nad;
 			$id_nad = (string) $item->attributes()->id_nad;
-			
+
 			$grupa_pod = (string) $item->attributes()->grupa_pod;
 			$id_pod = (string) $item->attributes()->id_pod;
-			
+
 			$lista['nad'][$id_nad] = $grupa_nad;
-			
+
 			if($id_pod) {
 				$lista['pod'][$id_pod] = array($id_nad => $grupa_pod);
 			}
 		}
-        
+
         return $lista;
     }
-    
+
     /**
-     * Zwraca tablicÄ™ z danymi na temat aktualnej ksiÄ…Å¼ki w promocji dnia.
-     * 
+     * Zwraca tablicê z danymi na temat aktualnej ksi¹¿ki w promocji dnia.
+     *
      * Dane zawarte w tablicy:
      * [isbn]
      * [ean]
      * [ident]
      * [tytul]
      * [autor]
-     * [cena] - cena po uwzglÄ™dnieniu zniÅ¼ki
-     * [cenadetaliczna] - normalna cena (bez zniÅ¼ki)
-     * [znizka] - zniÅ¼ka w procentach
+     * [cena] - cena po uwzglêdnieniu zni¿ki
+     * [cenadetaliczna] - normalna cena (bez zni¿ki)
+     * [znizka] - zni¿ka w procentach
      * [status]
      * [marka]
      * [ts] - timestamp
-     * 
+     *
      * @param string $ksiegarnia
-     * @return array 
+     * @return array
      */
     public function ksiazka_dnia($ksiegarnia) {
         if(!$this->val_ksiegarnia($ksiegarnia))
             return false;
-        
+
         if(isset($this->cache_ksiazka_dnia[$ksiegarnia]))
                 return $this->cache_ksiazka_dnia[$ksiegarnia];
-        
+
         $xml = $this->get_xml('http://' . $ksiegarnia . '.pl/plugins/xml/lista.cgi?pd=1');
-        
+
         $ksiazka_dnia = $this->parser_xml_ksiazka_dnia($xml);
-        
+
         if(!$ksiazka_dnia)
             return false;
-        
+
         $this->cache_ksiazka_dnia[$ksiegarnia] = $ksiazka_dnia;
-        
+
         return $ksiazka_dnia;
     }
-    
+
     private function parser_xml_ksiazka_dnia($xml) {
         $a = json_decode(json_encode((array) $xml),1);
-        
+
         if(is_array($a)) {
             $a = $a['item']['@attributes'];
             $a['ident'] = strtolower($a['ident']);
-            
+
             return $a;
         } else {
-            $this->error = 'Nie udaÅ‚o siÄ™ przetworzenie danych o ksiÄ…Å¼ce dnia.';
+            $this->error = 'Nie uda³o siê przetworzenie danych o ksi¹¿ce dnia.';
             return false;
         }
     }
@@ -916,19 +918,19 @@ class HelionLib {
     //
     //--------------------------------------------------------------------------
 
-    // TODO: przerobiÄ‡ na uÅ¼ywanie func_get_arg i func_num_args
-    
+    // TODO: przerobiæ na u¿ywanie func_get_arg i func_num_args
+
     /**
-     * OkreÅ›la czy podana ksiÄ…Å¼ka to ebook.
-     * 
+     * Okreœla czy podana ksi¹¿ka to ebook.
+     *
      * @param mixed $ksiazka
      * @param string $ident
-     * @return bool 
+     * @return bool
      */
-    public function is_ebook() {  
-        
+    public function is_ebook() {
+
         $num_args = func_num_args();
-        
+
         if($num_args == 1) {
             $ksiazka = func_get_arg(0);
         } else if ($num_args == 2) {
@@ -936,7 +938,7 @@ class HelionLib {
         } else {
             return null;
         }
-        
+
         if(isset ($ksiazka['ebook_formaty'])) {
             return true;
         } else {
@@ -944,17 +946,17 @@ class HelionLib {
         }
 
     }
-    
+
     /**
-     * Testuje, czy ksiÄ…Å¼ka jest bestsellerem.
-     * 
-     * @param mixed $ksiazka tablica $ksiazka lub nazwa ksiÄ™garni
-     * @param string $ident identyfikator ksiÄ…Å¼ki
-     * @return bool 
+     * Testuje, czy ksi¹¿ka jest bestsellerem.
+     *
+     * @param mixed $ksiazka tablica $ksiazka lub nazwa ksiêgarni
+     * @param string $ident identyfikator ksi¹¿ki
+     * @return bool
      */
     public function is_bestseller() {
         $num_args = func_num_args();
-        
+
         if($num_args == 1) {
             $ksiazka = func_get_arg(0);
         } else if ($num_args == 2) {
@@ -962,23 +964,23 @@ class HelionLib {
         } else {
             return null;
         }
-        
+
         if($ksiazka['bestseller'] == '1') {
             return true;
         } else {
             return false;
         }
     }
-    
+
     /**
-     * Testuje, czy ksiÄ…Å¼ka jest nowoÅ›ciÄ….
-     * 
+     * Testuje, czy ksi¹¿ka jest nowoœci¹.
+     *
      * @param array $ksiazka
-     * @return bool 
+     * @return bool
      */
     public function is_nowosc() {
         $num_args = func_num_args();
-        
+
         if($num_args == 1) {
             $ksiazka = func_get_arg(0);
         } else if ($num_args == 2) {
@@ -986,25 +988,25 @@ class HelionLib {
         } else {
             return null;
         }
-        
+
         if($ksiazka['nowosc'] == '1') {
             return true;
         } else {
             return false;
         }
     }
-    
+
     /**
-     * Testuje, czy ksiÄ…Å¼ka posiada zniÅ¼kÄ™ (nie sprawdza jej wysokoÅ›ci).
-     * 
-     * Aby otrzymaÄ‡ wysokoÅ›Ä‡ zniÅ¼ki, naleÅ¼y uÅ¼yÄ‡ metody wysokosc_znizki($ksiazka).
-     * 
+     * Testuje, czy ksi¹¿ka posiada zni¿kê (nie sprawdza jej wysokoœci).
+     *
+     * Aby otrzymaæ wysokoœæ zni¿ki, nale¿y u¿yæ metody wysokosc_znizki($ksiazka).
+     *
      * @param array $ksiazka
-     * @return bool 
+     * @return bool
      */
     public function is_znizka() {
         $num_args = func_num_args();
-        
+
         if($num_args == 1) {
             $ksiazka = func_get_arg(0);
         } else if ($num_args == 2) {
@@ -1012,23 +1014,23 @@ class HelionLib {
         } else {
             return null;
         }
-        
+
         if($ksiazka['znizka'] > '0') {
             return true;
         } else {
             return false;
         }
     }
-    
+
     /**
-     * Testuje, czy ksiÄ…Å¼ka jest dostÄ™pna w druku na Å¼Ä…danie.
-     * 
+     * Testuje, czy ksi¹¿ka jest dostêpna w druku na ¿¹danie.
+     *
      * @param array $ksiazka
-     * @return bool 
+     * @return bool
      */
     public function is_nazadanie() {
         $num_args = func_num_args();
-        
+
         if($num_args == 1) {
             $ksiazka = func_get_arg(0);
         } else if ($num_args == 2) {
@@ -1036,25 +1038,25 @@ class HelionLib {
         } else {
             return null;
         }
-        
+
         if($ksiazka['nazadanie'] == '1') {
             return true;
         } else {
             return false;
         }
     }
-    
+
     /**
-     * Zwraca liczbÄ™ odpowiadajÄ…cÄ… procentowej wysokoÅ›ci zniÅ¼ki na podanÄ… ksiÄ…Å¼kÄ™.
-     * 
-     * @param mixed $ksiazka tablica z danymi lub nazwa ksiÄ™garni
-     * @param string $ident identyfikator ksiÄ…Å¼ki (opcjonalny)
-     * 
+     * Zwraca liczbê odpowiadaj¹c¹ procentowej wysokoœci zni¿ki na podan¹ ksi¹¿kê.
+     *
+     * @param mixed $ksiazka tablica z danymi lub nazwa ksiêgarni
+     * @param string $ident identyfikator ksi¹¿ki (opcjonalny)
+     *
      * @return int
      */
     public function wysokosc_znizki() {
         $num_args = func_num_args();
-        
+
         if($num_args == 1) {
             $ksiazka = func_get_arg(0);
         } else if ($num_args == 2) {
@@ -1062,7 +1064,7 @@ class HelionLib {
         } else {
             return null;
         }
-        
+
         return $ksiazka['znizka'];
     }
 }
