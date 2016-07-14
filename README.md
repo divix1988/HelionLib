@@ -27,7 +27,8 @@ foreach ($books as $book) {
 	$bookLink = $helionLib->link_do_ksiazki('helion', $book['ident']);
 	$displayTitle = $book['title'];
 
-	$helion .= '<li><a href="'.$bookLink.'" title="'.$book['title'].'"><img src="'.$book['image'].'"/><span>'.$displayTitle.'</span>'.
+	$helion .= '<li><a href="'.$bookLink.'" title="'.$book['title'].'">'.
+		'<img src="'.$book['image'].'"/><span>'.$displayTitle.'</span>'.
 		'<span class="price"><b>Cena: '.$book['price'].'</b></span></a></li>';
 }
 $helion .= '</ul>';
