@@ -2,7 +2,7 @@ Fork Biblioteki HelionLib dla Programu Partnerskiego
 =================
 Użycie:
 ------------
-```html
+```php
 //dołączenie biblioteki
 include("libs/helion/helion-lib.php");
 
@@ -20,7 +20,7 @@ $books = $helionLib->top(
 		'random' => true
 	)
 );
-//zaczynamy budowani listy HTML
+//zaczynamy budowanie listy HTML
 $helion = '<ul>';
 
 foreach ($books as $book) {
