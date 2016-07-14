@@ -1,8 +1,7 @@
 Fork Biblioteki HelionLib dla Programu Partnerskiego
-
-Użycie:
 =================
-
+Użycie:
+------------
 ```html
 //dołączenie biblioteki
 include("libs/helion/helion-lib.php");
