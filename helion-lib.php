@@ -87,7 +87,7 @@ class HelionLib
             $this->displayError('Nieprawid³owy numer parnera');
             return false;
         }
-        //error_reporting(E_ALL);
+        
         require_once(__DIR__.'/simple_html_dom.php');
     }
 
@@ -412,7 +412,7 @@ class HelionLib
     private function parseDomTop($html)
     {
         $output = array();
-        $books = $html->find('div.book-item');
+        $books = $html->find('div.book-list-inner ul li');
 
         foreach ($books as $book) {
             $item = array();
@@ -423,11 +423,11 @@ class HelionLib
             $item['ident'] = $explodedIdent[0];
 
             $item['image'] = str_replace('helion-loader.gif', $item['ident'].'.jpg', $book->find('img', 0)->src);
-            $item['title'] = iconv("UTF-8", "ISO-8859-2", $book->find('a', 1)->title);
-            $item['price'] = iconv("UTF-8", "ISO-8859-2", ltrim($book->find('table b', 0)->plaintext, 'Cena: '));
+            $item['title'] = iconv("UTF-8", "ISO-8859-2", $book->find('img', 0)->title);
+            $item['price'] = iconv("UTF-8", "ISO-8859-2", ltrim($book->find('p.price a span', 0)->plaintext, 'Cena: '));
 
-            if (strpos($item['title'], 'Kurs video') !== false) {
-                //zignoruj video kursy
+            //zignoruj video kursy i niedostêpne ksi±¿ki
+            if (strpos($item['title'], 'Kurs video') !== false || empty($item['price'])) {
                 continue;
             }
             $output[] = $item;
